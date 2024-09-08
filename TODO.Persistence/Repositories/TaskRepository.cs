@@ -10,6 +10,8 @@ public class TaskRepository (TodoContext context) : ITaskRepository
 {
     public void AddTask(Task task)
     {
+        context.Tasks.FirstOrDefault(t => t.Id == task.Id);
+        if (task != null) throw new InvalidOperationException("Task already exists.");
         context.Tasks.Add(task);
         context.SaveChanges();
     }
@@ -22,14 +24,21 @@ public class TaskRepository (TodoContext context) : ITaskRepository
 
     public void DeleteTask(Task task)
     {
-        context.Tasks.Remove(task);
-        context.SaveChanges();
+        try
+        {
+            context.Tasks.Remove(task);
+            context.SaveChanges();
+        }
+        catch (Exception e)
+        { 
+            throw new InvalidOperationException();
+        }
     }
     
     public void UpdateTask(Task newTask, Task task)
     {
         var existingTask = context.Tasks.Local.FirstOrDefault(t => t.Id == task.Id);
-        if (existingTask == null) return;
+        if (existingTask == null) throw new InvalidOperationException();
         existingTask.Title = newTask.Title;
         existingTask.Description = newTask.Description;
         existingTask.DueDate = newTask.DueDate;

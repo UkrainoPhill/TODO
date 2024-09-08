@@ -41,6 +41,10 @@ public class TaskController(ITaskService _taskService) : ControllerBase
         {
             return BadRequest(e.Message);
         }
+        catch (InvalidOperationException e)
+        {
+            return Conflict(e.Message);
+        }
         catch (Exception e)
         {
             return StatusCode(StatusCodes.Status500InternalServerError);
@@ -64,13 +68,18 @@ public class TaskController(ITaskService _taskService) : ControllerBase
         {
             var token = HttpContext.Request.Cookies["access_token"];
             var task = _taskService.GetTask(id, token);
-            var result = new TaskGetOutputDto(task.Id, task.Title, task.Description, task.DueDate, task.Status, task.Priority,
+            var result = new TaskGetOutputDto(task.Id, task.Title, task.Description, task.DueDate, task.Status,
+                task.Priority,
                 task.CreatedAt, task.UpdatedAt);
             return Ok(result);
         }
         catch (UnauthorizedAccessException e)
         {
             return Unauthorized();
+        }
+        catch (InvalidOperationException e)
+        {
+            return NotFound();
         }
         catch (Exception e)
         {
@@ -147,6 +156,10 @@ public class TaskController(ITaskService _taskService) : ControllerBase
         {
             return Unauthorized();
         }
+        catch (InvalidOperationException e)
+        {
+            return NotFound();
+        }
         catch (ArgumentException e)
         {
             return BadRequest(e.Message);
@@ -179,6 +192,10 @@ public class TaskController(ITaskService _taskService) : ControllerBase
         catch (UnauthorizedAccessException)
         {
             return Unauthorized();
+        }
+        catch (InvalidOperationException e)
+        {
+            return NotFound();
         }
         catch (Exception)
         {

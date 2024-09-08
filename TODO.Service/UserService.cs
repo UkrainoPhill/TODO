@@ -32,11 +32,11 @@ public class UserService(IUserRepository _userRepository, IPasswordHasher _passw
         var user = _userRepository.GetUserByEmailOrUsername(emailOrUsername);
         if (user == null)
         {
-            throw new Exception("User not found.");
+            throw new ArgumentException("User not found.");
         }
         if (!_passwordHasher.VerifyHashedPassword(password, user.PasswordHash))
         {
-            throw new Exception("Password is invalid.");
+            throw new ArgumentException("Password is invalid.");
         }
         var token = _jwtProvider.GenerateToken(user);
         _logger.LogInformation("User logged in: {EmailOrUsername}", emailOrUsername);
