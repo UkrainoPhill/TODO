@@ -40,14 +40,16 @@ Here are the endpoints for TODO application:
 
 ### User Endpoints
 
-- **Register**: `POST /users/register` (register by email, username and password)
-- **Login**: `POST /users/login` (generate your JWT token and adding it to cookie)
+- **Register**: `POST /users/register`  - Description: Register by email, username, and password.
+  - Restrictions: None. This endpoint is publicly accessible.  - Password Requirements: 
+    - Length: 8 to 16 characters    - Must contain at least one uppercase letter
+    - Must contain at least one lowercase letter    - Must contain at least one number
+- **Login**: `POST /users/login`  - Description: Generate your JWT token and add it to the cookie.  - Restrictions: None. This endpoint is publicly accessible.
 
 ### Task Endpoints
 
-- **Get Tasks**: `GET /tasks` (get all user task, require authorization, you can filter tasks by Status, DueDate, and Priority, can sort by DueDate and Priority, can take pages
-)
-- **Get Task by ID**: `GET /tasks/{id}` (get task by id, require authorization)
-- **Create Task**: `POST /tasks` (create task, require authorization)
-- **Update Task**: `PUT /tasks/{id}`(update task by id, require authorization)
-- **Delete Task**: `DELETE /tasks/{id}` (delete task by id, require authorization)
+- **Get Tasks**: `GET /tasks`  - Description: Get all user tasks. You can filter tasks by Status, DueDate, and Priority, and sort by DueDate and Priority. Pagination is supported.  - Restrictions: Requires authorization. Only accessible by the authenticated user.
+- **Get Task by ID**: `GET /tasks/{id}`  - Description: Get task by ID.  - Restrictions: Requires authorization. Only accessible by the authenticated user who owns the task.
+- **Create Task**: `POST /tasks`  - Description: Create a new task.  - Restrictions: Requires authorization. Only accessible by the authenticated user.
+- **Update Task**: `PUT /tasks/{id}` - Description: Update task by ID.  - Restrictions: Requires authorization. Only accessible by the authenticated user who owns the task.
+- **Delete Task**: `DELETE /tasks/{id}` - Description: Delete task by ID.  - Restrictions: Requires authorization. Only accessible by the authenticated user who owns the task.
